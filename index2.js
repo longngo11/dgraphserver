@@ -1,13 +1,25 @@
 const express = require('express');
 const { buildSchema } = require('graphql');
 const { graphqlHTTP } = require('express-graphql');
+const cors = require( `cors` );
+const App =express();
+
 /* Đây là ví dụ schema đã được khởi tạo */
-var cors = require('cors')
+
 const corsOptions ={
-  origin:'http://localhost:3000', 
+  origin:'https://localhost:3000/', 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
+App.use(cors(corsOptions));
+App.use(
+    `/graphql`,
+    graphqlHTTP( {
+        schema: schema, // point to your schema 
+        rootValue: rootResolver, // point to your resolver 
+        graphiql: true
+    } )
+);
 var schema = buildSchema(`
   type Query {
     slider(id: Int!): Slider
